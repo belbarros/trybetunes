@@ -5,8 +5,8 @@ class Header extends React.Component {
   render() {
     return (
       <header data-testid="header-component">
-        <div>LOGO</div>
-        <nav>
+        <div className="logo-space">LOGO</div>
+        <nav className="links">
           <NavLink exact to="/search" data-testid="link-to-search">Buscar</NavLink>
           <NavLink to="/favorites" data-testid="link-to-favorites">Favoritos</NavLink>
           <NavLink exact to="/profile" data-testid="link-to-profile">Perfil</NavLink>

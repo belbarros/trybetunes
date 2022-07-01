@@ -1,5 +1,7 @@
 import React from 'react';
-// import propTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { createUser } from '../services/userAPI';
+import Loading from '../components/Loading';
 
 class Login extends React.Component {
   constructor() {
@@ -7,6 +9,8 @@ class Login extends React.Component {
     this.state = {
       username: '',
       isBtnDisabled: true,
+      loading: false,
+      logged: false,
     };
   }
 
@@ -30,13 +34,25 @@ class Login extends React.Component {
     }
   }
 
+  // A função createUser é uma função assíncrona, então torna-se necessário lidar com sua promise para prosseguir com o código. Usei o .then para mudar o setState quando é terminado de carregar a promise da função, como se fosse um botão on/off do usuário/loading state.
+
   handleSubmit = () => {
+    this.setState({
+      loading: true,
+    });
     const { username } = this.state;
-    createUser(username);
+    createUser({ name: username })
+      .then(() => this.setState({
+        loading: false,
+        logged: true,
+      }));
   }
 
   render() {
-    const { username, isBtnDisabled } = this.state;
+    const { username, isBtnDisabled, logged, loading } = this.state;
+    if (logged) return <Redirect to="./search" />;
+    if (loading) return <Loading />;
+
     return (
       <div data-testid="page-login">
         <form>
@@ -48,7 +64,7 @@ class Login extends React.Component {
             onChange={ this.handleInput }
           />
           <button
-            type="submit"
+            type="button"
             data-testid="login-submit-button"
             disabled={ isBtnDisabled }
             onClick={ this.handleSubmit }
@@ -60,9 +76,5 @@ class Login extends React.Component {
     );
   }
 }
-
-// Login.propTypes = {
-//   history: propTypes.string.isRequired,
-// };
 
 export default Login;
