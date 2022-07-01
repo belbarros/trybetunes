@@ -60,6 +60,7 @@ class Login extends React.Component {
             type="text"
             data-testid="login-name-input"
             name="username"
+            placeholder="Digite seu usuário"
             value={ username }
             onChange={ this.handleInput }
           />
